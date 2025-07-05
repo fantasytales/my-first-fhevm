@@ -5,6 +5,9 @@ pragma solidity ^0.8.24;
 contract Counter {
     uint32 private _count;
 
+    /// @notice Custom error for underflow
+    error Underflow();
+
     /// @notice Returns the current count
     function getCount() external view returns (uint32) {
         return _count;
@@ -17,7 +20,7 @@ contract Counter {
 
     /// @notice Decrements the counter by a specific value
     function decrement(uint32 value) external {
-        require(_count >= value, "Counter: cannot decrement below zero");
+        if (_count < value) revert Underflow();
         _count -= value;
     }
 }
